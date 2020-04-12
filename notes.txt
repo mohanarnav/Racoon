@@ -1,0 +1,18 @@
+XBEE AT COMMANDS FOR CONNECTING TO ECHO SERVER
+
+	+++
+	AT<Command>
+	ATWR
+	ATAC
+	ATCN
+
+Network: 	ID<Wifi Network>
+Passcode:	PK<passcode>
+DL:			ATDL<dl>  // eg: 52.43.121.77
+DE:			ATDE<de> // eg. 2329
+
+
+Bugs:
+-Fix the Modem Status Check 
+-Proceed with implementation of ip4 frame and socket API.
+
