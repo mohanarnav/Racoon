@@ -10,6 +10,11 @@ src/wifi_app.o: ../src/wifi_app.c \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/wpan/types.h \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/wpan/aps.h \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/atcmd.h \
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/ipv4.h \
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/socket.h \
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/socket_frames.h \
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/tx_status.h \
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/delivery_status.h \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/firmware.h \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/xmodem.h
 
@@ -34,6 +39,16 @@ src/wifi_app.o: ../src/wifi_app.c \
 /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/wpan/aps.h:
 
 /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/atcmd.h:
+
+/home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/ipv4.h:
+
+/home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/socket.h:
+
+/home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/socket_frames.h:
+
+/home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/tx_status.h:
+
+/home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/delivery_status.h:
 
 /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/firmware.h:
 

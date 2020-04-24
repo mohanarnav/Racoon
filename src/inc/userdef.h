@@ -13,6 +13,7 @@
 //#define XBEE_ATCMD_VERBOSE 1
 //#define XBEE_SERIAL_VERBOSE 1
 //#define XBEE_DEVICE_VERBOSE 1
+//#define XBEE_IPV4_VERBOSE 1
 #define RACOON_POSIX 1
 #define USER_VERBOSE 1
 #endif /* INC_USERDEF_H_ */

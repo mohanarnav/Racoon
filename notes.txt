@@ -16,3 +16,7 @@ Bugs:
 -Fix the Modem Status Check 
 -Proceed with implementation of ip4 frame and socket API.
 
+Check following topics
+-IP4
+-TCP
+-revise const pointers
