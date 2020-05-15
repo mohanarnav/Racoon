@@ -13,6 +13,9 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+src/MQTTClient-C/src \
+src/MQTTClient-C/src/stm32 \
+src/MQTTPacket/src \
 src \
 src/xbee_ansic_library/ports/user \
 src/xbee_ansic_library/src/util \

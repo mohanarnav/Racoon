@@ -47,6 +47,7 @@ extern volatile char at_cmd_str[3];
 extern xbee_dev_t racoon_xbee;
 extern AT_Command at_command;
 extern volatile uint8_t ack_status;
+extern volatile uint8_t modem_status;
 
 typedef enum{
 	NO_MATCH = 0,
@@ -58,9 +59,10 @@ typedef enum{
 
 uint8_t connect_to_wifi(void);
 uint8_t check_frame(char *cmd);
-void print_rxipv4_frame_payload(void);
+void process_rxipv4_frame_payload(void);
 void init_ipv4_tx_test(void);
 uint8_t get_RxIpv4_payload(void);
+int get_mqtt_payload(unsigned char* buffer, int len);
 
 void init_socket_api(void);
 // Callbacks

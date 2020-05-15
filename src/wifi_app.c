@@ -11,10 +11,12 @@
 #include "xbee/atcmd.h"         // for XBEE_FRAME_HANDLE_LOCAL_AT
 #include <string.h>
 #include <unistd.h>
+#include <xbee_queue.h>
 
 xbee_dev_t racoon_xbee;
 volatile uint8_t read_xbee = 0;
 volatile uint8_t ack_status = 0;
+volatile uint8_t modem_status = 0;
 
 const xbee_dispatch_table_entry_t xbee_frame_handlers[] =
 {
@@ -90,16 +92,16 @@ uint8_t connect_to_wifi(void)
 		xbee_cmd_execute((xbee_dev_t *) &racoon_xbee, cmds[i], (const void FAR *) *ptr, length);
 		ret &= send_ack(cmds[i]);
 		ptr++;
-		sleep(0.01);
+		sleep(0.1);
 
 		xbee_cmd_execute((xbee_dev_t *) &racoon_xbee, "WR", (const void FAR *) NULL, 0);
 		ret &= send_ack("WR");
-		sleep(0.01);
+		sleep(0.1);
 
 
 		xbee_cmd_execute((xbee_dev_t *) &racoon_xbee, "AC", (const void FAR *) NULL, 0);
 		ret &= send_ack("AC");
-		sleep(0.01);
+		sleep(0.1);
 
 		if(!ret){
 #ifdef USER_VERBOSE
@@ -111,6 +113,7 @@ uint8_t connect_to_wifi(void)
 #endif
 			wifi_state++;
 		}
+		sleep(0.1);
 	}
 	if(wifi_state == NO_OF_STEPS){
 		return WIFI_STATE_COMPLETE;
@@ -126,12 +129,23 @@ uint8_t check_frame(char *cmd)
 	uint8_t ret = 0;
 	uint8_t timeout = 0;
 
+	printf("API-ID: %0.2x\n", (uint8_t) racoon_xbee.rx.frame_data[0]);
+
+	/* Modem Activity
+	 * 0: Hardware reset or power up
+	 * 1: Watchdog timer reset
+	 * 2: Joined
+	 * 3: No Longger joined to access point
+	 * 0x0E: Remote manager connected
+	 * 0x0F: Remote manager disconnected
+	 * */
 	if((uint8_t) racoon_xbee.rx.frame_data[0] == 0x8A)
 	{
 #ifdef USER_VERBOSE
-			printf("Modem Activity Detected\n");
-			printf("Status: %0.2x\n", (uint8_t) racoon_xbee.rx.frame_data[0]);
+			printf("Modem Detected\n");
+			printf("Status: %0.2x\n", (uint8_t) racoon_xbee.rx.frame_data[1]);
 #endif
+			modem_status = (uint8_t) racoon_xbee.rx.frame_data[1];
 			ret = MODEM_ACTIVITY;
 	}
 
@@ -150,56 +164,83 @@ uint8_t check_frame(char *cmd)
 	}
 }
 
+/* For stm put this in an interrupt; or improve resolution */
 uint8_t get_RxIpv4_payload(void)
 {
-	/* Make this blocking in STM */
-	int t0 = xbee_millisecond_timer();
-	int dt = t0;
 	volatile int rx_found = 0;
-	do{
-		uint8_t ret = _xbee_frame_load(&racoon_xbee);
-		dt = xbee_millisecond_timer() - t0;
-		/* Checking for Tx Status messages */
-		if(racoon_xbee.rx.frame_data[0]==0x89 && ret != 0)
-		{
-			printf("Tx Status: %0.2x\n", racoon_xbee.rx.frame_data[2]);
-		}
-		/* Checking of Rx */
-		if(racoon_xbee.rx.frame_data[0]==0xB0 && ret != 0){
-#ifdef USER_VERBOSE
-			printf("RxIPv4 found\n");
-			print_rxipv4_frame_payload();
-
-#endif
-			rx_found++;
-		}
-	}while(dt < 2000);
-
-	if(dt > 2000)
+	/* Checking for Modem activity */
+	if(racoon_xbee.rx.frame_data[0]==0x8A)
 	{
-		printf("RxIPv4 Timeout\n");
+		//printf("Modem Activity: %0.2x\n", racoon_xbee.rx.frame_data[1]);
 	}
+
+	/* Checking for AT Command Response */
+	if(racoon_xbee.rx.frame_data[0]==0x88)
+	{
+		// printf("AT Command Response: %0.2x\n", racoon_xbee.rx.frame_data[2]);
+	}
+
+	/* Checking for Tx Status messages */
+	if(racoon_xbee.rx.frame_data[0]==0x89)
+	{
+		//printf("Tx Status: %0.2x\n", racoon_xbee.rx.frame_data[2]);
+	}
+	/* Checking of Rx */
+	if(racoon_xbee.rx.frame_data[0]==0xB0){
+#ifdef USER_VERBOSE
+		//printf("RxIPv4 found\n");
+		process_rxipv4_frame_payload();
+#endif
+		rx_found++;
+	}
+
 	return 0;
 }
 
 /* IPV4 frame API functionalities */
 #define RXIPV4_OFFSET 11
-void print_rxipv4_frame_payload(void)
+void process_rxipv4_frame_payload(void)
 {
-	printf("\nASCIIdata: \n");
+	for(int i = RXIPV4_OFFSET; i < racoon_xbee.rx.bytes_in_frame; i++)
+	{
+		enQueue(&payload_queue, racoon_xbee.rx.frame_data[i]);
+
+		// printf("%c", racoon_xbee.rx.frame_data[i]);
+	}
+
+#if 0
+	printf("ASCIIdata: \n");
 	for(int i = RXIPV4_OFFSET; i < racoon_xbee.rx.bytes_in_frame; i++)
 	{
 		printf("%c", racoon_xbee.rx.frame_data[i]);
 	}
-	printf("\nHex Data:\n");
+	printf("Hex Data:\n");
 
 	for(int i = RXIPV4_OFFSET; i < racoon_xbee.rx.bytes_in_frame; i++)
 	{
 		printf("%x ", racoon_xbee.rx.frame_data[i]);
 	}
 	printf("\n");
+#endif
 }
 
+
+int get_mqtt_payload(unsigned char* buffer, int len){
+	while(isEmpty(&payload_queue)); // include a timeout here.
+
+	char *rptr = (char *) buffer;
+
+	for(int i = 0; i < len; i++){
+		*rptr = deQueue(&payload_queue);
+		// printf("%c", *rptr);
+		rptr++;
+	}
+
+	// printf("\n");
+
+	return len;
+
+}
 void init_ipv4_tx_test(void)
 {
 	char payload[] = {0x0D};
@@ -210,10 +251,20 @@ void init_ipv4_tx_test(void)
 	tx_envelope.payload = (const void FAR *) &payload;          //< contents of message
 	tx_envelope.length = 1;
 
+	unsigned char buffer[100];
+	uint32_t t0, tf;
+
+	t0 = xbee_millisecond_timer();
+
 	int ret = xbee_ipv4_envelope_send(&tx_envelope);
+	get_mqtt_payload(&buffer[0],2);
+	get_mqtt_payload(&buffer[2],4);
+	get_mqtt_payload(&buffer[6],8);
 
-	get_RxIpv4_payload();
+	tf = xbee_millisecond_timer();
 
+	printf("Time taken for capture: %d ms\n", tf - t0);
+	printf("End of ipv4 test \n");
 }
 
 /* Socket API functionalities */

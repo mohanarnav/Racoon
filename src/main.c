@@ -14,7 +14,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "wifi_app.h"
+#include <wifi_app.h>
+#include <mqtt_app.h>
 
 pthread_t back_thread;
 pthread_cond_t c_read = PTHREAD_COND_INITIALIZER;
@@ -22,6 +23,14 @@ pthread_cond_t c_write = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 
 volatile uint8_t connection_state = 0;
+
+typedef enum{
+	DISCONNECTED = 0,
+	MODEM_WAIT,
+	CONNECTED,
+	MQTT_CONNECTED
+}State;
+
 
 void *back_task(void * param);
 
@@ -48,7 +57,7 @@ int main(void) {
 	xbee_serial_t serport;
 	serport.baudrate = 115200;
 	serport.fd = 0;
-	strcpy(serport.device,"/dev/ttyUSB1");
+	strcpy(serport.device,"/dev/ttyUSB0");
 
 	if(xbee_dev_init(&racoon_xbee, &serport, NULL, NULL))
 	{
@@ -104,27 +113,37 @@ int main(void) {
 	}
 
 	sleep(1);
-
+#if 0
 /* Create a debug thread */
 	printf("Connecting to Wifi\n");
 	uint8_t ret = connect_to_wifi();
 	if(ret == WIFI_STATE_COMPLETE){
 		printf("Wifi state machine succeeded in process\n");
+		printf("Read XBee status %d\n", read_xbee);
 		connection_state++;
-	}
-	sleep(5);
 
-//	init_ipv4_tx_test();
+		read_xbee++;
+		pthread_cond_signal(&c_read);
+	}else{
+		printf("Wifi state machine FAILED in process\n");
+	}
+
+	while(connection_state != CONNECTED);
+	sleep(1);
+	// init_ipv4_tx_test();
+#endif
+#if 1
+	read_xbee++;
+	pthread_cond_signal(&c_read);
+	connection_state = CONNECTED;
+#endif
+	// init_ipv4_tx_test();
+	mqtt_app();
+
 	pthread_join(back_thread, NULL);
 
 	return EXIT_SUCCESS;
 }
-
-typedef enum{
-	DISCONNECTED = 0,
-	CONNECTED = 1,
-	MQTT_CONNECTED = 2
-}State;
 
 void *back_task(void *param){
 	printf("Running Background Thread\n\n");
@@ -143,19 +162,22 @@ void *back_task(void *param){
 
 		int dt = 0;
 		int t0 = xbee_millisecond_timer();
-		while(_xbee_frame_load(&racoon_xbee)==0 && dt <= TIMEOUT)
-			dt = xbee_millisecond_timer() - t0;
+		volatile int ret_xbee = _xbee_frame_load(&racoon_xbee);
 
-		if(dt > TIMEOUT)
+		while(ret_xbee==0 && dt <= TIMEOUT){
+			ret_xbee = _xbee_frame_load(&racoon_xbee);
+			dt = xbee_millisecond_timer() - t0;
+		}
+
+		if(dt > TIMEOUT && connection_state == DISCONNECTED)
 		{
-			printf("frame_load TIMEOUT\n");
+			// printf("frame_load TIMEOUT\n");
 			timeout = true;
 			read_xbee = 0; // No more frames to be loaded from receive.
 			pthread_cond_signal(&c_write); // Wake up any thread waiting to send a cmd.
 		}
 
 		if(!timeout){
-
 			uint8_t ret = 0;
 			switch(connection_state){
 				case DISCONNECTED:
@@ -164,12 +186,26 @@ void *back_task(void *param){
 						ack_status = 0x1;
 					}
 					break;
+				case MODEM_WAIT:
+					if(ret_xbee!=0){
+						printf("Modem Wait\n");
+						ret = check_frame("AC");
+					}
+					if(modem_status == 0x0e || modem_status == 0x02){
+						printf("Modem Connected\n");
+						connection_state++;
+					}
+					break;
+				case CONNECTED:
+					if(ret_xbee!=0){
+						get_RxIpv4_payload();
+					}
+					// Look for error
+					// ret = check_frame(0x00);
+					break;
 				default:
 					break;
 			}
 		}
-
 	}
-
-
 }

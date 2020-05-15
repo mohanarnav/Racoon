@@ -14,7 +14,8 @@ src/main.o: ../src/main.c \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/socket.h \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/socket_frames.h \
  /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/tx_status.h \
- /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/delivery_status.h
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/delivery_status.h \
+ /home/arnavm89/cpp-workspace/XbeeS6B/src/inc/mqtt_app.h
 
 /home/arnavm89/cpp-workspace/XbeeS6B/src/inc/wifi_app.h:
 
@@ -47,3 +48,5 @@ src/main.o: ../src/main.c \
 /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/tx_status.h:
 
 /home/arnavm89/cpp-workspace/XbeeS6B/src/xbee_ansic_library/include/xbee/delivery_status.h:
+
+/home/arnavm89/cpp-workspace/XbeeS6B/src/inc/mqtt_app.h:

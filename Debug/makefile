@@ -13,6 +13,9 @@ RM := rm -rf
 -include src/xbee_ansic_library/src/wpan/subdir.mk
 -include src/xbee_ansic_library/src/util/subdir.mk
 -include src/xbee_ansic_library/ports/user/subdir.mk
+-include src/MQTTPacket/src/subdir.mk
+-include src/MQTTClient-C/src/stm32/subdir.mk
+-include src/MQTTClient-C/src/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
 -include objects.mk

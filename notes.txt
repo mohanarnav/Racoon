@@ -20,3 +20,9 @@ Check following topics
 -IP4
 -TCP
 -revise const pointers
+
+Pin config
+https://www.digi.com/resources/documentation/digidocs/90001525/default.htm#reference/r_pinouts_th.htm%3FTocPath%3DHardware%7CPin%2520signals%7C_____0
+
+XBIB-CU-TH reference
+https://www.digi.com/resources/documentation/Digidocs/90001541/reference/r_xbib-c_th_ref.htm?tocpath=Hardware%7CDevelopment%20boards%7C_____2
