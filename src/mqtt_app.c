@@ -54,7 +54,7 @@ int mqtt_app(void){
 	int network_connect_status;
 	NetworkInit(&n);
 	network_connect_status = NetworkConnect(&n, opts.host, opts.port);
-	MQTTClientInit(&c, &n, 100, buf, MAX_BUF_SIZE, readbuf, MAX_BUF_SIZE);
+	MQTTClientInit(&c, &n, 100000, buf, MAX_BUF_SIZE, readbuf, MAX_BUF_SIZE);
 	printf("Network Connection Status: %d\n", network_connect_status);
 
 	MQTTPacket_connectData data = MQTTPacket_connectData_initializer;
@@ -65,7 +65,7 @@ int mqtt_app(void){
 	data.password.cstring = opts.password;
 
 	data.keepAliveInterval = 60;
-	data.cleansession = 0;
+	data.cleansession = 1;
 	printf("Connecting to %s %d\n", opts.host, opts.port);
 
 	rc = MQTTConnect(&c, &data);
@@ -113,10 +113,10 @@ volatile unsigned char max_payload[MAX_LOAD];
 		if ((rc = MQTTPublish(&c, "test_topic", &msg)) == 0)
 		{
 			success++;
+			t0_f = xbee_millisecond_timer();
+			printf("Time taken for %dst publish: %d ms\n", i, (t0_f - t0_0));
 		}
-		t0_f = xbee_millisecond_timer();
-		printf("Time taken for %dst publish: %d ms\n", i, (t0_f - t0_0));
-		// usleep(100000);
+		usleep(20000);
 	}
 
 	tf = xbee_millisecond_timer();

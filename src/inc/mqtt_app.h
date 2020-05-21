@@ -16,7 +16,7 @@
 #define MQTT_FLESPI_IO "193.193.165.38"
 #define LOCAL_SERVER "127.0.0.1"
 #define MOSQUITTO_SERVER "134.209.49.220"
-#define MOSQUITTO_PORT 8883
+#define MOSQUITTO_PORT 1883
 /* "18.217.238.169" */
 /* "18.218.251.230" */
 /* a1pfddqlz1h3oj.iot.us-east-2.amazonaws.com */

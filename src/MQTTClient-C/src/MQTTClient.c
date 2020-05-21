@@ -653,7 +653,7 @@ int MQTTPublish(MQTTClient* c, const char* topicName, MQTTMessage* message)
                 rc = FAILURE;
         }
         else
-            rc = FAILURE;*/
+            rc = FAILURE; */
     	/* Change by Arnav */
     	rc = SUCCESS;
     }

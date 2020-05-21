@@ -37,6 +37,9 @@ typedef struct{
 
 #define TIMEOUT 100
 
+#define RATE_115200 115200
+#define RATE_921600	921600
+
 extern volatile uint8_t read_xbee;
 extern pthread_cond_t c_read;
 extern pthread_cond_t c_write;

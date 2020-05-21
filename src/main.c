@@ -8,6 +8,7 @@
  ============================================================================
  */
 
+/* MADE CHANGES IN MQTTClient.h AND ipv4.h */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,7 +56,7 @@ int main(void) {
 	int status;
 
 	xbee_serial_t serport;
-	serport.baudrate = 115200;
+	serport.baudrate = RATE_921600;
 	serport.fd = 0;
 	strcpy(serport.device,"/dev/ttyUSB0");
 

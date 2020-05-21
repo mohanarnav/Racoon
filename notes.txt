@@ -26,3 +26,13 @@ https://www.digi.com/resources/documentation/digidocs/90001525/default.htm#refer
 
 XBIB-CU-TH reference
 https://www.digi.com/resources/documentation/Digidocs/90001541/reference/r_xbib-c_th_ref.htm?tocpath=Hardware%7CDevelopment%20boards%7C_____2
+
+MAX RATE Required:
+CAN rate: 8 bytes / 2 ms
+		 = 4 kbps
+Analog Rate: n * 2 bytes/ 1 ms
+			= n * 2 kbps
+
+For 50 kbps data rate on the cellular:
+	n < 23 signals
+	
