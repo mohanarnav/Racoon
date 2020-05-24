@@ -18,9 +18,14 @@ SUBDIRS := \
 StdPeriph_Driver/src \
 USB-FS-Device_Driver/src \
 Utilities \
+inc/startup \
 src/FreeRTOS/Source \
 src/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 src/FreeRTOS/Source/portable/MemMang \
 src \
-startup \
+src/xbee_ansic_library/ports/user \
+src/xbee_ansic_library/src/util \
+src/xbee_ansic_library/src/wpan \
+src/xbee_ansic_library/src/xbee \
+src/xbee_ansic_library/src/zigbee \
 

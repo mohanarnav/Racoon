@@ -16,7 +16,7 @@
 #define GPIO_PinSource_Tx GPIO_PinSource2
 #define GPIO_PinSource_Rx GPIO_PinSource3
 #define GPIO_PinSource_Ck GPIO_PinSource4
-#define BAUDRATE 115200
+#define PRINT_BAUDRATE 115200
 
 void uartConfig();
 void UU_PutChar(uint8_t ch);

@@ -31,7 +31,7 @@ void uartConfig(void)
 	 	GPIO_PinAFConfig(UGPIOx, GPIO_PinSource_Ck, GPIO_AF_USARTx);
 
 	 	/* USART configuration */
-	 	USART_InitStruct.USART_BaudRate = BAUDRATE;
+	 	USART_InitStruct.USART_BaudRate = PRINT_BAUDRATE;
 	 	USART_InitStruct.USART_WordLength = USART_WordLength_8b;
 	 	USART_InitStruct.USART_StopBits = USART_StopBits_1;
 	 	USART_InitStruct.USART_Parity = USART_Parity_No;

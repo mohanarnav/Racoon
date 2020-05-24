@@ -8,9 +8,10 @@
 #ifndef RTOS_TASKS_H_
 #define RTOS_TASKS_H_
 
-#include "gpio_config.h"
-#include "FreeRTOS.h"
-#include "task.h"
+#include <gpio_config.h>
+#include <FreeRTOS.h>
+#include <queue.h>
+#include <task.h>
 #include "usart_printf.h"
 
 /* Task Notes
@@ -34,5 +35,18 @@ void task1(void *pvParameters);
 
 extern TaskHandle_t task2Handle;
 void task2(void *pvParameters);
+
+
+extern QueueHandle_t xQueue;
+
+void vSenderTask(void *pvParameters);
+void vReceiverTask(void *pvParameters);
+void test_queue(void);
+
+
+/* Declarations for the main application */
+void queue_tasks(void);
+void mqtt_task(void *pvParameters);
+void test_task(void *pvParameters);
 
 #endif /* RTOS_TASKS_H_ */

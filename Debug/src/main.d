@@ -42,8 +42,10 @@ src/main.o: ../src/main.c \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/deprecated_definitions.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/mpu_wrappers.h \
+ C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/queue.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/task.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/list.h \
+ C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/task.h \
  C:/Users/arnav/workspace/hippie_v2/inc/usart_printf.h
 
 C:/Users/arnav/workspace/hippie_v2/CMSIS/device/stm32f30x.h:
@@ -132,8 +134,12 @@ C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/portable/GCC/ARM_CM4F/por
 
 C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/mpu_wrappers.h:
 
+C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/queue.h:
+
 C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/task.h:
 
 C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/list.h:
+
+C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/task.h:
 
 C:/Users/arnav/workspace/hippie_v2/inc/usart_printf.h:

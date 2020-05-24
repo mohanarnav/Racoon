@@ -8,11 +8,16 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include startup/subdir.mk
+-include src/xbee_ansic_library/src/zigbee/subdir.mk
+-include src/xbee_ansic_library/src/xbee/subdir.mk
+-include src/xbee_ansic_library/src/wpan/subdir.mk
+-include src/xbee_ansic_library/src/util/subdir.mk
+-include src/xbee_ansic_library/ports/user/subdir.mk
 -include src/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include src/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include src/FreeRTOS/Source/subdir.mk
 -include src/subdir.mk
+-include inc/startup/subdir.mk
 -include Utilities/subdir.mk
 -include USB-FS-Device_Driver/src/subdir.mk
 -include StdPeriph_Driver/src/subdir.mk

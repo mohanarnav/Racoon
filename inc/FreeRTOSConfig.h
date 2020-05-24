@@ -75,7 +75,7 @@
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 			0
-#define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
+#define configMAX_CO_ROUTINE_PRIORITIES ( 5 )
 
 /* Software timer definitions. */
 #define configUSE_TIMERS				1
@@ -85,8 +85,8 @@
 
 /* Interrupt nesting behaviour configuration. */
 #define configKERNEL_INTERRUPT_PRIORITY        255 // [dependent of processor]
-#define configMAX_SYSCALL_INTERRUPT_PRIORITY   254 // [dependent on processor and application]
-#define configMAX_API_CALL_INTERRUPT_PRIORITY  253 // [dependent on processor and application]
+#define configMAX_SYSCALL_INTERRUPT_PRIORITY   10 // [dependent on processor and application]
+#define configMAX_API_CALL_INTERRUPT_PRIORITY  10 // [dependent on processor and application]
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
