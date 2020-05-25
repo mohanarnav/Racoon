@@ -9,6 +9,7 @@
 #include "rtos_tasks.h"
 #include "usart_printf.h"
 #include "usart_xbee.h"
+#include "racoon_test.h"
 
 TaskHandle_t mqtt_task_handle = NULL;
 
@@ -18,8 +19,10 @@ void queue_tasks(void)
 	xQueue = xQueueCreate(5, sizeof(int32_t));
 
 	if(xQueue != NULL){
-		xTaskCreate(mqtt_task, "MQTT_Task", 400, "MQTT_TASK\n\r", 1, NULL);
+		xTaskCreate(mqtt_task, "MQTT_Task", 400, "MQTT_TASK\n\r", 2, NULL);
+#ifdef TEST_TASK
 		xTaskCreate(test_task, "TEST_Task", 400, "TEST_TASK\r\n", 1, NULL);
+#endif
 	}
 }
 
@@ -44,26 +47,8 @@ void mqtt_task(void *pvParameters)
 		taskEXIT_CRITICAL();
 		u_printf("\n\r");
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_8);
-		vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(100));
-	}
-
-	vTaskDelete(NULL);
-}
-
-
-void test_task(void *pvParameters)
-{
-	TickType_t xLastTick;
-	xLastTick = xTaskGetTickCount();
-	for(;;)
-	{
-		char *msg = "Hello Arnav\r\n";
-		GPIO_ToggleBits(GPIOD, GPIO_Pin_10);
-		xbee_send(msg, strlen(msg));
-		GPIO_ToggleBits(GPIOD, GPIO_Pin_10);
 		vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(500));
 	}
 
 	vTaskDelete(NULL);
-
 }

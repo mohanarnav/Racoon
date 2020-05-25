@@ -38,7 +38,7 @@ extern char rec_buffer[MAX_BUFFER_LENGTH];
 extern uint32_t rec_buffer_length;
 extern QueueHandle_t xbee_rx_queue;
 
-void usart_xbee_config(void);
+void usart_xbee_config(uint32_t baudrate);
 void xbee_send_byte(uint8_t ch);
 void xbee_send(uint8_t * str, uint8_t cmd_length);
 void reset_rec_buffer(void);

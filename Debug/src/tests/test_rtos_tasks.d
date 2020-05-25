@@ -1,4 +1,7 @@
-src/main.o: ../src/main.c \
+src/tests/test_rtos_tasks.o: ../src/tests/test_rtos_tasks.c \
+ C:/Users/arnav/workspace/hippie_v2/inc/rtos_tasks.h \
+ C:/Users/arnav/workspace/hippie_v2/inc/gpio_config.h \
+ C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_gpio.h \
  C:/Users/arnav/workspace/hippie_v2/CMSIS/device/stm32f30x.h \
  C:/Users/arnav/workspace/hippie_v2/CMSIS/core/core_cm4.h \
  C:/Users/arnav/workspace/hippie_v2/CMSIS/core/core_cmInstr.h \
@@ -28,30 +31,6 @@ src/main.o: ../src/main.c \
  C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_usart.h \
  C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_wwdg.h \
  C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_misc.h \
- C:/Users/arnav/workspace/hippie_v2/Utilities/stm32f3_discovery.h \
- C:/Users/arnav/workspace/hippie_v2/inc/usart_printf.h \
- C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_usart.h \
- C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_rcc.h \
- C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_gpio.h \
- C:/Users/arnav/workspace/hippie_v2/inc/usart_xbee.h \
- C:/Users/arnav/workspace/hippie_v2/inc/xbee.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/platform.h \
- C:/Users/arnav/workspace/hippie_v2/inc/userdef.h \
- c:\users\arnav\workspace\hippie_v2\src\xbee_ansic_library\ports\user\platform_config.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/jslong_glue.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/jslong.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/device.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/serial.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/wpan/types.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/wpan/aps.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/atcmd.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/ipv4.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/socket.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/socket_frames.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/tx_status.h \
- C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/delivery_status.h \
- C:/Users/arnav/workspace/hippie_v2/inc/rtos_tasks.h \
- C:/Users/arnav/workspace/hippie_v2/inc/gpio_config.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/FreeRTOS.h \
  C:/Users/arnav/workspace/hippie_v2/inc/FreeRTOSConfig.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/projdefs.h \
@@ -64,7 +43,14 @@ src/main.o: ../src/main.c \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/list.h \
  C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/task.h \
  C:/Users/arnav/workspace/hippie_v2/inc/usart_printf.h \
- C:/Users/arnav/workspace/hippie_v2/inc/rtos_tasks.h
+ C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_usart.h \
+ C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_rcc.h
+
+C:/Users/arnav/workspace/hippie_v2/inc/rtos_tasks.h:
+
+C:/Users/arnav/workspace/hippie_v2/inc/gpio_config.h:
+
+C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_gpio.h:
 
 C:/Users/arnav/workspace/hippie_v2/CMSIS/device/stm32f30x.h:
 
@@ -124,54 +110,6 @@ C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_wwdg.h:
 
 C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_misc.h:
 
-C:/Users/arnav/workspace/hippie_v2/Utilities/stm32f3_discovery.h:
-
-C:/Users/arnav/workspace/hippie_v2/inc/usart_printf.h:
-
-C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_usart.h:
-
-C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_rcc.h:
-
-C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_gpio.h:
-
-C:/Users/arnav/workspace/hippie_v2/inc/usart_xbee.h:
-
-C:/Users/arnav/workspace/hippie_v2/inc/xbee.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/platform.h:
-
-C:/Users/arnav/workspace/hippie_v2/inc/userdef.h:
-
-c:\users\arnav\workspace\hippie_v2\src\xbee_ansic_library\ports\user\platform_config.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/jslong_glue.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/jslong.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/device.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/serial.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/wpan/types.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/wpan/aps.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/atcmd.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/ipv4.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/socket.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/socket_frames.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/tx_status.h:
-
-C:/Users/arnav/workspace/hippie_v2/src/xbee_ansic_library/include/xbee/delivery_status.h:
-
-C:/Users/arnav/workspace/hippie_v2/inc/rtos_tasks.h:
-
-C:/Users/arnav/workspace/hippie_v2/inc/gpio_config.h:
-
 C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/FreeRTOS.h:
 
 C:/Users/arnav/workspace/hippie_v2/inc/FreeRTOSConfig.h:
@@ -196,4 +134,6 @@ C:/Users/arnav/workspace/hippie_v2/src/FreeRTOS/Source/include/task.h:
 
 C:/Users/arnav/workspace/hippie_v2/inc/usart_printf.h:
 
-C:/Users/arnav/workspace/hippie_v2/inc/rtos_tasks.h:
+C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_usart.h:
+
+C:/Users/arnav/workspace/hippie_v2/StdPeriph_Driver/inc/stm32f30x_rcc.h:

@@ -13,6 +13,7 @@ RM := rm -rf
 -include src/xbee_ansic_library/src/wpan/subdir.mk
 -include src/xbee_ansic_library/src/util/subdir.mk
 -include src/xbee_ansic_library/ports/user/subdir.mk
+-include src/tests/subdir.mk
 -include src/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include src/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include src/FreeRTOS/Source/subdir.mk

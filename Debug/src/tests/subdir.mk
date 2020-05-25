@@ -4,17 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/FreeRTOS/Source/portable/MemMang/heap_2.c 
+../src/tests/test_isr_task.c \
+../src/tests/test_rtos_tasks.c 
 
 OBJS += \
-./src/FreeRTOS/Source/portable/MemMang/heap_2.o 
+./src/tests/test_isr_task.o \
+./src/tests/test_rtos_tasks.o 
 
 C_DEPS += \
-./src/FreeRTOS/Source/portable/MemMang/heap_2.d 
+./src/tests/test_isr_task.d \
+./src/tests/test_rtos_tasks.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-src/FreeRTOS/Source/portable/MemMang/%.o: ../src/FreeRTOS/Source/portable/MemMang/%.c
+src/tests/%.o: ../src/tests/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
 	@echo $(PWD)

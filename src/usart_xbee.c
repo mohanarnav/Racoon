@@ -14,7 +14,7 @@ char rec_buffer[MAX_BUFFER_LENGTH];
 uint32_t rec_buffer_length;
 QueueHandle_t xbee_rx_queue;
 
-void usart_xbee_config(void)
+void usart_xbee_config(uint32_t baudrate)
 {
 		RCC_AHBPeriphClockCmd(RCC_USART_XBEE_GPIOx, ENABLE);
 		RCC_APB1PeriphClockCmd(RCC_USARTx_XBEE, ENABLE);
@@ -39,7 +39,7 @@ void usart_xbee_config(void)
 	 	GPIO_PinAFConfig(UGPIOx_XBEE, GPIO_PinSource_Ck_XBEE, GPIO_AF_USARTx_XBEE);
 
 	 	/* USART configuration */
-	 	USART_InitStruct.USART_BaudRate = BAUDRATE;
+	 	USART_InitStruct.USART_BaudRate = baudrate;
 	 	USART_InitStruct.USART_WordLength = USART_WordLength_8b;
 	 	USART_InitStruct.USART_StopBits = USART_StopBits_1;
 	 	USART_InitStruct.USART_Parity = USART_Parity_No;

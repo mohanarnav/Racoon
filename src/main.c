@@ -13,6 +13,7 @@
 #include "stm32f3_discovery.h"
 #include "usart_printf.h"
 
+#include "usart_xbee.h"
 #include "rtos_tasks.h"
 
 const char* task0_text = "Task0 Running: Arnav Mohan is Awesome\n\r";
@@ -23,7 +24,7 @@ int main(void)
 {
 	init_GPIO();
 	uartConfig();
-	usart_xbee_config();
+	usart_xbee_config(BAUD_921600);
 	u_printf("Running...\n\r");
 	/*	TaskFunction, Task Name, Stack Size, Pointer to parameters, task priority, handle to the task */
 //	xTaskCreate(task1, "task1", 200, (void *) task1_text, 1, NULL);

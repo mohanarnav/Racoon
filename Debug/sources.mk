@@ -23,6 +23,7 @@ src/FreeRTOS/Source \
 src/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 src/FreeRTOS/Source/portable/MemMang \
 src \
+src/tests \
 src/xbee_ansic_library/ports/user \
 src/xbee_ansic_library/src/util \
 src/xbee_ansic_library/src/wpan \
