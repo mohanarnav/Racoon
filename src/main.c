@@ -24,7 +24,7 @@ int main(void)
 {
 	init_GPIO();
 	uartConfig();
-	usart_xbee_config(BAUD_921600);
+	usart_xbee_config(BAUD_115200);
 	u_printf("Running...\n\r");
 	/*	TaskFunction, Task Name, Stack Size, Pointer to parameters, task priority, handle to the task */
 //	xTaskCreate(task1, "task1", 200, (void *) task1_text, 1, NULL);

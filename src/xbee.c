@@ -6,6 +6,7 @@
  */
 
 
+#include "rtos_tasks.h"
 #include "xbee.h"
 #include "xbee/device.h"
 #include "xbee/firmware.h"
@@ -204,10 +205,11 @@ void process_rxipv4_frame_payload(void)
 {
 	for(int i = RXIPV4_OFFSET; i < racoon_xbee.rx.bytes_in_frame; i++)
 	{
-		enQueue(&payload_queue, racoon_xbee.rx.frame_data[i]);
+		// enQueue(&payload_queue, racoon_xbee.rx.frame_data[i]);
 
-		// printf("%c", racoon_xbee.rx.frame_data[i]);
+		UU_PutChar(racoon_xbee.rx.frame_data[i]);
 	}
+	u_printf("\n\r");
 
 #if 0
 	printf("ASCIIdata: \n");
@@ -242,6 +244,9 @@ int get_mqtt_payload(unsigned char* buffer, int len){
 	return len;
 
 }
+
+
+/* Not to be called from an ISR */
 void init_ipv4_tx_test(void)
 {
 	char payload[] = {0x0D};
@@ -258,13 +263,33 @@ void init_ipv4_tx_test(void)
 	t0 = xbee_millisecond_timer();
 
 	int ret = xbee_ipv4_envelope_send(&tx_envelope);
-	get_mqtt_payload(&buffer[0],2);
-	get_mqtt_payload(&buffer[2],4);
-	get_mqtt_payload(&buffer[6],8);
+//	get_mqtt_payload(&buffer[0],2);
+//	get_mqtt_payload(&buffer[2],4);
+//	get_mqtt_payload(&buffer[6],8);
+
+/* Only to be used if delay is required.
+	TickType_t xLastTick;
+	xLastTick = xTaskGetTickCount();
+	vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(100));
+*/
+
+	volatile int ret_xbee = 0;
+
+	int dt = 0;
+	int rx_t0 = xbee_millisecond_timer();
+	while(ret_xbee == 0 && dt <= TIMEOUT){
+		ret_xbee = _xbee_frame_load(&racoon_xbee);
+		dt = xbee_millisecond_timer() - rx_t0;
+	}
+
+	if(ret_xbee != 0){
+		get_RxIpv4_payload();
+	}
 
 	tf = xbee_millisecond_timer();
-/*
-	printf("Time taken for capture: %d ms\n", tf - t0);
-	printf("End of ipv4 test \n");
-*/
+
+	u_printf("Time taken for capture:");
+	u_printf32(tf - t0);
+	u_printf("\n\rEnd of ipv4 test \n\r\n\r");
+
 }

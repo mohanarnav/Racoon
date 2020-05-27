@@ -67,40 +67,31 @@ void usart_xbee_config(uint32_t baudrate)
 	 	xbee_rx_queue = xQueueCreate(RX_QUEUE_MAX_SIZE, sizeof(char));
 }
 
-/* Remember USARTx is defined in usart_printf.h */
-
+/* Send a Byte to XBee */
 void xbee_send_byte(uint8_t ch)
 {
-//  while(!(USARTx->SR & USART_IT_TXE)); // THIS MIGHT MOST DEFINITELY BE WRONG
   while( !(USARTx_XBEE->ISR & USART_ISR_TC) );
   USARTx_XBEE->TDR = (ch & (uint16_t)0x01FF);
 }
 
-
-void xbee_send(uint8_t * str, uint8_t cmd_length)
+/* Send a string to XBee */
+int xbee_send(uint8_t * str, uint8_t cmd_length)
 {
   while(cmd_length > 0)
   {
-//	u_printf32(*str);
-//	u_printf(" ");
     xbee_send_byte(*str);
     str++;
     cmd_length--;
   }
+
+  return 1; // return that send was successful
 }
 
-
-void reset_rec_buffer(void)
-{
-	rec_buffer_length = 0;
-}
-
-#if 1
-volatile uint8_t buffer_overflow_flag = 0;
 
 // this is the interrupt request handler (IRQ) for ALL USARTx interrupts
 void USARTx_XBEE_IRQHANDLER(void){
-	// check if the USART1 receive interrupt flag was set
+
+	// check if the USARTx_XBEE receive interrupt flag was set
 	if( USART_GetITStatus(USARTx_XBEE, USARTx_XBEE_IT_FLAG) ){
 
 		BaseType_t ret;
@@ -113,51 +104,41 @@ void USARTx_XBEE_IRQHANDLER(void){
 
 			status = taskENTER_CRITICAL_FROM_ISR();
 			char rx_data = (char) USARTx_XBEE->RDR;
-			// UU_PutChar(rx_data);
 			status = xQueueSendToBackFromISR(xbee_rx_queue, &rx_data, &xHigherPriorityTaskWoken);
 			taskEXIT_CRITICAL_FROM_ISR(status);
 		}
 
 		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 	}
+
 }
-#endif
 
-#if 1
-volatile int packet_ctr = 0, packet_itr = 0, packet_error = 0;
-volatile int16_t packet_length = 0;
-volatile uint8_t in_read = 0;
-int rc;
-
-void read_fn(char c)
+/* This function is to be called from the Tasks and not from ISR */
+int xbee_read(unsigned char* buffer, int len)
 {
+	/* Probably introduce a delay or predicate for reading */
+	/* This is an extreme measure; since this is not blocking */
+	/*
+	 *	while(uxQueueMessagesWaiting(xQueue == 0);
+	 */
+	char *rptr = (char*) buffer;
 
-}
+	BaseType_t ret;
 
-#if 0
-extern volatile uint8_t queue_flag;
+	for(int i = 0; i < len; i++){
 
-void USARTx_XBEE_IRQHANDLER(void){
+		taskENTER_CRITICAL();
+			char c = 0x00;
+			ret = xQueueReceive(xbee_rx_queue, &c, pdMS_TO_TICKS(200)); // This should be blocking, Max time: 2 ms
+			if(ret != 0){
+				*rptr++ = c;
+			}
+		taskEXIT_CRITICAL();
+	}
 
-	if( USART_GetITStatus(USARTx_XBEE, USARTx_XBEE_IT_FLAG) ){
-		// queue_flag = 1;
-		// GPIO_ToggleBits(GPIOD, GPIO_Pin_9);
-		char c = USARTx_XBEE->RDR;
-		read_fn(c);
+	if(rptr == (char *) buffer + len){
+		return len;
+	}else{
+		return -1;
 	}
 }
-#endif
-
-int no_of_bits_captured = 0;
-/* Make sure that interrupt control is off */
-void xbee_read(void)
-{
-	while(USART_GetFlagStatus(USARTx_XBEE, USART_FLAG_RXNE))
-	{
-		char c = USARTx_XBEE->RDR;
-		// u_printf32((uint8_t) c);
-		no_of_bits_captured++;
-		read_fn(c);
-	}
-}
-#endif

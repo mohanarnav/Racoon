@@ -11,6 +11,8 @@
 #include "usart_xbee.h"
 #include "xbee/platform.h"
 
+xbee_serial_t xbee_serial;
+
 void test_task(void *pvParameters)
 {
 	TickType_t xLastTick;
@@ -22,7 +24,7 @@ void test_task(void *pvParameters)
 	{
 		char *msg = "Hello Arnav\r\n";
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_10);
-		xbee_send(msg, strlen(msg));
+		xbee_ser_write(&xbee_serial, msg, 13);
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_10);
 		vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(100));
 
@@ -31,6 +33,7 @@ void test_task(void *pvParameters)
 		uint32_t dt = tf - t0;
 		t0 = tf;
 		configASSERT(dt >= 90); // Check out the hook for config assert
+
 
 	}
 

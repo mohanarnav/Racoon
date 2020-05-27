@@ -9,7 +9,7 @@
 #define TESTS_RACOON_TEST_H_
 
 /* Tests for Task Management */
-#define TEST_TASK 1
+//#define TEST_TASK 1
 void test_task(void *pvParameters);
 
 
