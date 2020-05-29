@@ -77,6 +77,7 @@ void xbee_send_byte(uint8_t ch)
 /* Send a string to XBee */
 int xbee_send(uint8_t * str, uint8_t cmd_length)
 {
+  int len = cmd_length;
   while(cmd_length > 0)
   {
     xbee_send_byte(*str);
@@ -84,7 +85,7 @@ int xbee_send(uint8_t * str, uint8_t cmd_length)
     cmd_length--;
   }
 
-  return 1; // return that send was successful
+  return len; // return that send was successful
 }
 
 
