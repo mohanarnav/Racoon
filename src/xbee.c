@@ -205,11 +205,10 @@ void process_rxipv4_frame_payload(void)
 {
 	for(int i = RXIPV4_OFFSET; i < racoon_xbee.rx.bytes_in_frame; i++)
 	{
-		// enQueue(&payload_queue, racoon_xbee.rx.frame_data[i]);
-
-		UU_PutChar(racoon_xbee.rx.frame_data[i]);
+		enQueue(&payload_queue, racoon_xbee.rx.frame_data[i]);
+		//UU_PutChar(racoon_xbee.rx.frame_data[i]);
 	}
-	u_printf("\n\r");
+	//u_printf("\n\r");
 
 #if 0
 	printf("ASCIIdata: \n");
@@ -229,19 +228,40 @@ void process_rxipv4_frame_payload(void)
 
 
 int get_mqtt_payload(unsigned char* buffer, int len){
-	while(isEmpty(&payload_queue)); // include a timeout here.
 
-	char *rptr = (char *) buffer;
+	int dt = 0;
+	int rx_t0 = xbee_millisecond_timer();
 
-	for(int i = 0; i < len; i++){
-		*rptr = deQueue(&payload_queue);
-		// printf("%c", *rptr);
-		rptr++;
+	/* Replace with blocking queue */
+	while(isEmpty(&payload_queue) && dt <= TIMEOUT){
+
+		volatile int ret_xbee = 0;
+
+		ret_xbee = _xbee_frame_load(&racoon_xbee);
+
+		if(ret_xbee != 0){
+			get_RxIpv4_payload();
+		}
+
+		dt = xbee_millisecond_timer() - rx_t0;
 	}
 
-	// printf("\n");
 
-	return len;
+	if(!isEmpty(&payload_queue)){
+		char *rptr = (char *) buffer;
+
+		for(int i = 0; i < len; i++){
+			*rptr = deQueue(&payload_queue);
+			UU_PutChar(*rptr);
+			rptr++;
+		}
+		u_printf("\n\r");
+		return len;
+	}else{
+		u_printf("TIMEOUT FOR MQTT READ\n\r");
+		return -1;
+	}
+
 
 }
 
@@ -263,33 +283,41 @@ void init_ipv4_tx_test(void)
 	t0 = xbee_millisecond_timer();
 
 	int ret = xbee_ipv4_envelope_send(&tx_envelope);
-//	get_mqtt_payload(&buffer[0],2);
-//	get_mqtt_payload(&buffer[2],4);
-//	get_mqtt_payload(&buffer[6],8);
+
+	get_mqtt_payload(&buffer[0],2);
+	get_mqtt_payload(&buffer[2],4);
+
+	flushQueue(&payload_queue);
 
 /* Only to be used if delay is required.
 	TickType_t xLastTick;
 	xLastTick = xTaskGetTickCount();
 	vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(100));
 */
-
+#if 0
 	volatile int ret_xbee = 0;
 
 	int dt = 0;
+	volatile int msg_rec = 0;
 	int rx_t0 = xbee_millisecond_timer();
 	while(ret_xbee == 0 && dt <= TIMEOUT){
 		ret_xbee = _xbee_frame_load(&racoon_xbee);
-		dt = xbee_millisecond_timer() - rx_t0;
-	}
 
-	if(ret_xbee != 0){
-		get_RxIpv4_payload();
+		if(ret_xbee != 0){
+			msg_rec++;
+			get_RxIpv4_payload();
+		}
+
+		dt = xbee_millisecond_timer() - rx_t0;
 	}
 
 	tf = xbee_millisecond_timer();
 
+	u_printf("No. of msgs: ");
+	u_printf32(msg_rec);
+	u_printf("\n\r");
 	u_printf("Time taken for capture:");
 	u_printf32(tf - t0);
 	u_printf("\n\rEnd of ipv4 test \n\r\n\r");
-
+#endif
 }

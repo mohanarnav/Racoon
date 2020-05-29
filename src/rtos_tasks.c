@@ -11,6 +11,7 @@
 #include "usart_printf.h"
 #include "usart_xbee.h"
 #include "racoon_test.h"
+#include "mqtt_app.h"
 
 TaskHandle_t mqtt_task_handle = NULL;
 static volatile int count = 0;
@@ -39,8 +40,6 @@ void wait_startup( void)
 
 void mqtt_task(void *pvParameters)
 {
-	TickType_t xLastTick;
-	xLastTick = xTaskGetTickCount();
 	char buff[50];
 
 /* Intializations */
@@ -78,7 +77,8 @@ void mqtt_task(void *pvParameters)
 	 *	110  -ETIMEDOUT  query timed out  CMD_LIST_TIMEOUT
 	 *	5	 -EIO        halted, but query may not have completed
 	 */
-
+#endif
+#if 1
 
 	do{
 		xbee_dev_tick(&racoon_xbee);
@@ -95,6 +95,16 @@ void mqtt_task(void *pvParameters)
 #endif
 /*******************************************************/
 
+#ifdef TEST_MQTT
+	u_printf("TESTING MQTT\n\r");
+	test_mqtt(NULL);
+#endif
+
+	task_delay(2000);
+
+	TickType_t xLastTick;
+	xLastTick = xTaskGetTickCount();
+
 	for(;;)
 	{
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_8);
@@ -110,14 +120,22 @@ void mqtt_task(void *pvParameters)
 
 		if(count < 10){
 			u_printf((uint8_t *) pvParameters);
+			// mqtt_app();
 			init_ipv4_tx_test();
 			count++;
 		}
 
 
 		GPIO_ToggleBits(GPIOD, GPIO_Pin_8);
-		vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(2000));
+		task_delay(200);
 	}
 
 	vTaskDelete(NULL);
+}
+
+void task_delay(uint32_t time_in_ms){
+	TickType_t xLastTick;
+	xLastTick = xTaskGetTickCount();
+
+	vTaskDelayUntil(&xLastTick, pdMS_TO_TICKS(time_in_ms));
 }
