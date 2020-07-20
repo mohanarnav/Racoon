@@ -1,33 +1,3 @@
-/*
- * Copyright (c) 2010-2012 Digi International Inc.,
- * All rights not expressly granted are reserved.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/.
- *
- * Digi International Inc. 11001 Bren Road East, Minnetonka, MN 55343
- * =======================================================================
- */
-/**
-    @addtogroup hal_posix
-    @{
-    @file xbee_serial_posix.c
-    Serial Interface for XBee Module (POSIX Platform)
-
-    This file was created by Tom Collins <Tom.Collins@digi.com> based on
-    information from:
-
-    http://www.easysw.com/~mike/serial/serial.html
-
-    Serial Programming Guide for POSIX Operating Systems
-    5th Edition, 6th Revision
-    Copyright 1994-2005 by Michael R. Sweet
-
-    @todo missing a way to hold Tx in break condition
-*/
-// NOTE: Documentation for these functions can be found in xbee/serial.h.
-
 #include <limits.h>
 #include <errno.h>
 #include <fcntl.h>
